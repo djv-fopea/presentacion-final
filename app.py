@@ -15,7 +15,7 @@ def load_data():
     df = pd.read_csv("data/todos_los_tuits_filtrado.zip")
 
     # # Asegurar tipo fecha
-    df["fecha_milei"] = pd.to_datetime(df["fecha_milei"], errors="coerce")
+    df["fecha_milei"] = pd.to_datetime(df["fecha_milei"], errors="coerce", utc=True)
 
     return df
 
@@ -43,11 +43,10 @@ tipo_mensaje = st.sidebar.multiselect(
 
 fecha_min, fecha_max = st.sidebar.date_input(
     "Rango de fechas",
-    value=(df["fecha_milei"].min(), df["fecha_milei"].max())
+    value=(df["fecha_milei"].min().date(), df["fecha_milei"].max().date())
 )
-
-fecha_min = pd.to_datetime(fecha_min)
-fecha_max = pd.to_datetime(fecha_max)
+fecha_min = pd.Timestamp(fecha_min).tz_localize("UTC")
+fecha_max = pd.Timestamp(fecha_max).tz_localize("UTC")
 
 modo_busqueda = st.sidebar.radio(
     "Modo de búsqueda",
@@ -66,8 +65,8 @@ texto_busqueda = st.sidebar.text_input(
 df_filt = df[
     (df["emisor"].isin(emisor)) &
     (df["tipo_mensaje"].isin(tipo_mensaje)) &
-    (df["fecha_milei"] >= pd.to_datetime(fecha_min)) &
-    (df["fecha_milei"] <= pd.to_datetime(fecha_max))
+    (df["fecha_milei"] >= fecha_min) &
+    (df["fecha_milei"] <= fecha_max)
 ].copy()
 
 df_filt = df_filt.dropna(subset=["fecha_milei"])
