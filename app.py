@@ -148,4 +148,23 @@ st.dataframe(
     use_container_width=True,
     height=500
 ) 
-   
+import io
+
+# ======================
+# BOTÓN PARA EXPORTAR CSV
+# ======================
+st.subheader("💾 Exportar resultados")
+
+# Convertir DataFrame a CSV en memoria
+csv_buffer = io.StringIO()
+df_filt.to_csv(csv_buffer, index=False)
+csv_bytes = csv_buffer.getvalue().encode('utf-8')  # convertir a bytes
+
+# Botón de descarga
+st.download_button(
+    label="Descargar CSV",
+    data=csv_bytes,
+    file_name="tuits_filtrados.csv",
+    mime="text/csv"
+)
+
