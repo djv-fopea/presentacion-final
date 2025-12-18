@@ -47,9 +47,6 @@ fecha_min, fecha_max = st.sidebar.date_input(
     value=(df["fecha_milei"].min(), df["fecha_milei"].max())
 )
 
-fecha_min = pd.Timestamp(fecha_min)
-fecha_max = pd.Timestamp(fecha_max)
-
 modo_busqueda = st.sidebar.radio(
     "Modo de búsqueda",
     ["Exacta (palabra completa)", "Por raíz / contiene"],
