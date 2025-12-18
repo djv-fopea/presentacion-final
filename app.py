@@ -75,10 +75,17 @@ df_filt = df_filt.dropna(subset=["fecha_milei"])
 # Crear mes para gráficos
 df_filt["mes"] = df_filt["fecha_milei"].dt.to_period("M").astype(str)
 
+import unicodedata
+import re
+
 # ======================
 # FILTRO POR TEXTO 
 # ======================
+def quitar_urls(texto):
+    return re.sub(r'https?://\S+', '', texto)
+
 def normalizar(texto):
+    texto = quitar_urls(texto)  # eliminar enlaces
     texto = str(texto).lower()
     texto = ''.join(
         c for c in unicodedata.normalize('NFD', texto)
@@ -89,7 +96,7 @@ def normalizar(texto):
 if texto_busqueda.strip():
     texto_norm = normalizar(texto_busqueda)
 
-    # Normalizar columna de texto
+    # Normalizar columna de texto (sin URLs)
     df_filt["texto_norm"] = df_filt["texto"].apply(normalizar)
 
     if modo_busqueda == "Exacta (palabra completa)":
@@ -98,6 +105,7 @@ if texto_busqueda.strip():
         patron = rf"{re.escape(texto_norm)}"
 
     df_filt = df_filt[df_filt["texto_norm"].str.contains(patron, regex=True, na=False)]
+
 
 
 # ======================
