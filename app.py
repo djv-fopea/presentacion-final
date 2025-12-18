@@ -155,22 +155,21 @@ import io
 # ======================
 import io
 
-st.subheader("💾 Exportar CSV")
+st.subheader("💾 Exportar Archivo")
 
 # Crear copia del DataFrame sin la columna 'texto_norm'
 df_export = df_filt.drop(columns=["texto_norm"], errors="ignore")
 
-# Convertir DataFrame a CSV en memoria con UTF-8 BOM (para que Excel lo lea bien)
-csv_buffer = io.StringIO()
-df_export.to_csv(csv_buffer, index=False, encoding='utf-8-sig')
-csv_bytes = csv_buffer.getvalue().encode('utf-8-sig')
+excel_buffer = io.BytesIO()
+with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
+    df_export.to_excel(writer, index=False, sheet_name="Tuits_filtrados")
+excel_buffer.seek(0)
 
-# Botón de descarga
 st.download_button(
-    label="Descargar CSV",
-    data=csv_bytes,
-    file_name="tuits_filtrados.csv",
-    mime="text/csv"
+    label="Descargar Excel",
+    data=excel_buffer,
+    file_name="tuits_filtrados.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 )
 
 
