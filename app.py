@@ -99,8 +99,10 @@ if texto_busqueda.strip():
     # Normalizar columna de texto (sin URLs)
     df_filt["texto_norm"] = df_filt["texto"].apply(normalizar)
 
+   
     if modo_busqueda == "Exacta (palabra completa)":
-        patron = rf"\b{re.escape(texto_norm)}\b"
+        palabras = texto_norm.split("|")
+        patron = r"\b(" + "|".join(re.escape(p) for p in palabras) + r")\b"
     else:  # Por raíz / contiene
         patron = rf"{re.escape(texto_norm)}"
 
