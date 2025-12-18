@@ -14,8 +14,8 @@ st.set_page_config(
 def load_data():
     df = pd.read_csv("data/todos_los_tuits_filtrado.zip")
 
-    # Asegurar tipo fecha
-    df["fecha_milei"] = pd.to_datetime(df["fecha_milei"], errors="coerce")
+    # # Asegurar tipo fecha
+    # df["fecha_milei"] = pd.to_datetime(df["fecha_milei"], errors="coerce")
 
     return df
 
