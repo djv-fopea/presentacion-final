@@ -75,7 +75,7 @@ df_filt = df_filt.dropna(subset=["fecha_milei"])
 df_filt["mes"] = df_filt["fecha_milei"].dt.to_period("M").astype(str)
 
 # ======================
-# FILTRO POR TEXTO (usa texto_norm)
+# FILTRO POR TEXTO 
 # ======================
 if texto_busqueda.strip():
     texto = texto_busqueda.lower()
@@ -86,7 +86,7 @@ if texto_busqueda.strip():
         patron = rf"({texto})"
 
     df_filt = df_filt[
-        df_filt["texto_norm"].str.contains(
+        df_filt["texto"].str.contains(
             patron, regex=True, na=False
         )
     ]
@@ -118,7 +118,7 @@ retuits_mes = (
 st.bar_chart(retuits_mes)
 
 # ======================
-# TABLA FINAL (SIN texto_norm)
+# TABLA FINAL 
 # ======================
 st.subheader("🧾 Posteos")
 
