@@ -153,12 +153,17 @@ import io
 # ======================
 # BOTÓN PARA EXPORTAR CSV
 # ======================
+import io
+
 st.subheader("💾 Exportar resultados")
 
-# Convertir DataFrame a CSV en memoria
+# Crear copia del DataFrame sin la columna 'texto_norm'
+df_export = df_filt.drop(columns=["texto_norm"], errors="ignore")
+
+# Convertir a CSV en memoria
 csv_buffer = io.StringIO()
-df_filt.to_csv(csv_buffer, index=False)
-csv_bytes = csv_buffer.getvalue().encode('utf-8')  # convertir a bytes
+df_export.to_csv(csv_buffer, index=False)
+csv_bytes = csv_buffer.getvalue().encode('utf-8')
 
 # Botón de descarga
 st.download_button(
@@ -167,4 +172,5 @@ st.download_button(
     file_name="tuits_filtrados.csv",
     mime="text/csv"
 )
+
 
