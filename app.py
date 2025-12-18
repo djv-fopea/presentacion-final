@@ -15,7 +15,7 @@ def load_data():
     df = pd.read_csv("data/todos_los_tuits_filtrado.zip")
 
     # # Asegurar tipo fecha
-    # df["fecha_milei"] = pd.to_datetime(df["fecha_milei"], errors="coerce")
+    df["fecha_milei"] = pd.to_datetime(df["fecha_milei"], errors="coerce")
 
     return df
 
@@ -66,8 +66,8 @@ texto_busqueda = st.sidebar.text_input(
 df_filt = df[
     (df["emisor"].isin(emisor)) &
     (df["tipo_mensaje"].isin(tipo_mensaje)) &
-    (df["fecha_milei"] >= fecha_min) &
-    (df["fecha_milei"] <= fecha_max)
+    (df["fecha_milei"] >= pd.to_datetime(fecha_min)) &
+    (df["fecha_milei"] <= pd.to_datetime(fecha_max))
 ].copy()
 
 df_filt = df_filt.dropna(subset=["fecha_milei"])
