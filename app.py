@@ -16,7 +16,7 @@ def load_data():
     df = pd.read_csv("data/todos_los_tuits_filtrado.zip")
 
     # Asegurar tipo fecha
-    df["fecha_milei"] = pd.to_datetime(df["fecha_milei"], errors="coerce").dt.date
+    df["fecha_milei"] = pd.to_datetime(df["fecha_milei"], errors="coerce")
 
     return df
 
@@ -47,8 +47,8 @@ fecha_min, fecha_max = st.sidebar.date_input(
     value=(df["fecha_milei"].min(), df["fecha_milei"].max())
 )
 
-fecha_min = pd.to_datetime(fecha_min)
-fecha_max = pd.to_datetime(fecha_max)
+fecha_min = pd.Timestamp(fecha_min)
+fecha_max = pd.Timestamp(fecha_max)
 
 modo_busqueda = st.sidebar.radio(
     "Modo de búsqueda",
