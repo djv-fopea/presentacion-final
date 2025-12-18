@@ -13,7 +13,7 @@ st.set_page_config(
 # ======================
 @st.cache_data
 def load_data():
-    df = pd.read_csv("data/todos_los_tuits_filtrados.zip")
+    df = pd.read_csv("data/todos_los_tuits_filtrado.zip")
 
     # Asegurar tipo fecha
     df["fecha_milei"] = pd.to_datetime(df["fecha_milei"], errors="coerce")
