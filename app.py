@@ -1,6 +1,7 @@
 import pandas as pd
 import re
 import streamlit as st
+import unicodedata
 
 st.set_page_config(
     page_title="FOPEA APP - DJV 2025",
@@ -77,19 +78,27 @@ df_filt["mes"] = df_filt["fecha_milei"].dt.to_period("M").astype(str)
 # ======================
 # FILTRO POR TEXTO 
 # ======================
+def normalizar(texto):
+    texto = str(texto).lower()
+    texto = ''.join(
+        c for c in unicodedata.normalize('NFD', texto)
+        if unicodedata.category(c) != 'Mn'
+    )
+    return texto
+
 if texto_busqueda.strip():
-    texto = texto_busqueda.lower()
+    texto_norm = normalizar(texto_busqueda)
+
+    # Normalizar columna de texto
+    df_filt["texto_norm"] = df_filt["texto"].apply(normalizar)
 
     if modo_busqueda == "Exacta (palabra completa)":
-        patron = rf"\b({texto})\b"
-    else:
-        patron = rf"({texto})"
+        patron = rf"\b{re.escape(texto_norm)}\b"
+    else:  # Por raíz / contiene
+        patron = rf"{re.escape(texto_norm)}"
 
-    df_filt = df_filt[
-        df_filt["texto"].str.contains(
-            patron, regex=True, na=False
-        )
-    ]
+    df_filt = df_filt[df_filt["texto_norm"].str.contains(patron, regex=True, na=False)]
+
 
 # ======================
 # GRAFICO 1 – TUITS POR MES
