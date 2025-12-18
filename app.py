@@ -1,5 +1,7 @@
 import pandas as pd
 import re
+import streamlit as st
+
 
 st.set_page_config(
     page_title="Análisis temporal de tuits de Milei",
