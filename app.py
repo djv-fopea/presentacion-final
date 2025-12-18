@@ -161,7 +161,7 @@ st.subheader("💾 Exportar Archivo")
 df_export = df_filt.drop(columns=["texto_norm"], errors="ignore")
 
 excel_buffer = io.BytesIO()
-with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
+with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
     df_export.to_excel(writer, index=False, sheet_name="Tuits_filtrados")
 excel_buffer.seek(0)
 
