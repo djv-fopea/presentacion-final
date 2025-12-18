@@ -148,36 +148,5 @@ st.dataframe(
     use_container_width=True,
     height=500
 ) 
-import io
-
-# ======================
-# BOTÓN PARA EXPORTAR CSV
-# ======================
-import io
-
-
-st.subheader("💾 Exportar Excel")
-
-# Copiar DataFrame y quitar 'texto_norm'
-df_export = df_filt.drop(columns=["texto_norm"], errors="ignore").copy()
-
-# Convertir datetime a string para evitar problemas con timezones
-if "fecha_milei" in df_export.columns:
-    df_export["fecha_milei"] = df_export["fecha_milei"].astype(str)
-
-# Crear buffer de Excel
-excel_buffer = io.BytesIO()
-with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
-    df_export.to_excel(writer, index=False, sheet_name="Tuits_filtrados")
-
-excel_buffer.seek(0)
-
-# Botón de descarga
-st.download_button(
-    label="Descargar Excel",
-    data=excel_buffer,
-    file_name="tuits_filtrados.xlsx",
-    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-)
 
 
