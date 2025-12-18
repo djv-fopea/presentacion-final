@@ -4,7 +4,7 @@ import streamlit as st
 
 
 st.set_page_config(
-    page_title="FOPEA APP - BOOTCAMP DJV2025",
+    page_title="FOPEA APP - DJV 2025",
     layout="wide"
 )
 
