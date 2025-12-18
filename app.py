@@ -2,7 +2,6 @@ import pandas as pd
 import re
 import streamlit as st
 
-
 st.set_page_config(
     page_title="FOPEA APP - DJV 2025",
     layout="wide"
@@ -13,11 +12,10 @@ st.set_page_config(
 # ======================
 @st.cache_data
 def load_data():
-    df = pd.read_csv("data/todos_los_tuits_filtrado.zip")
+    df = pd.read_csv("data/todos_los_tuits_filtrados.zip")
 
     # Asegurar tipo fecha
     df["fecha_milei"] = pd.to_datetime(df["fecha_milei"], errors="coerce")
-
 
     return df
 
@@ -47,6 +45,9 @@ fecha_min, fecha_max = st.sidebar.date_input(
     "Rango de fechas",
     value=(df["fecha_milei"].min(), df["fecha_milei"].max())
 )
+
+fecha_min = pd.to_datetime(fecha_min)
+fecha_max = pd.to_datetime(fecha_max)
 
 modo_busqueda = st.sidebar.radio(
     "Modo de búsqueda",
